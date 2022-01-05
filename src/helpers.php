@@ -13,33 +13,39 @@ use Illuminate\Support\Facades\Log;
  */
 function __t($key = null, $replace = [], $locale = null)
 {
-    if (is_null($key)) {
+    $segments = explode('.', $key);
+
+    if (is_null($key) || count($segments) != 2) {
 
         return $key;
     }
 
+    $group = $segments[0];
+    $sourceText = $segments[1];
+
     $trans = __($key, $replace, $locale);
 
-    if ($trans != $key) {
+    //set the Langs 
+
+    $sourceLang =  'auto' ?? 'en';
+
+    $targetLang =  $locale ?? app()->getLocale() ?? 'ar';
+    $locale = $targetLang;
+
+
+
+    if ($trans != $key && $locale == "en") {
         return $trans;
     }
 
+
     try {
-        $segments = explode('.', $key);
-
-        $group = $segments[0];
-        $sourceText = $segments[1];
-
-        $sourceLang =  'auto' ?? 'en';
-
-        $targetLang =  $locale ?? app()->getLocale() ?? 'ar';
-        $locale = $targetLang;
 
         //call the google tranlate to get trans word with curl call
         $client = new GuzzleHttp\Client();
 
         $url = "https://translate.googleapis.com/translate_a/single?client=gtx&sl="
-            . $sourceLang . "&tl=" . $targetLang . "&dt=t&q=" . $sourceText;
+        . $sourceLang . "&tl=" . $targetLang . "&dt=t&q=" . $sourceText;
 
 
         $res = $client->request('GET', $url);
@@ -67,7 +73,13 @@ function __t($key = null, $replace = [], $locale = null)
 
 
 
-        foreach ([$localeFile, $EnFile] as $file) {
+        $transFiles = [$localeFile];
+        if ($locale != "en") {
+            $transFiles[] = $EnFile;
+        }
+
+
+        foreach ($transFiles as $file) {
 
             $path = $file['Path'];
             $msg = $file['Msg'];
@@ -101,10 +113,8 @@ function __t($key = null, $replace = [], $locale = null)
 
             // file_put_contents($path, $NewFileContent);
         }
-      
 
-        return $translatedText;
-  
+        return $translatedText;  
 
     } catch (Exception $e) {
         Log::error("Error in translate the word : " . $key  . " ", ['Message' =>  $e->getMessage()]);
@@ -112,6 +122,14 @@ function __t($key = null, $replace = [], $locale = null)
     }
 }
 
+/**
+ * Translate the given message With three underscores.
+ *
+ * @param  string|null  $key
+ * @param  array  $replace
+ * @param  string|null  $locale
+ * @return string|array|null
+ */
 function ___($key = null, $replace = [], $locale = null)
 {
     return __t($key, $replace, $locale);
