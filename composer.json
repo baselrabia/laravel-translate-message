@@ -1,0 +1,33 @@
+{
+    "name": "baselrabia/laravel-translate-message",
+    "description": "Provides new helper functions that take care of handling all the translation hassle and do it for you.",
+    "keywords": ["translation", "message", "translate", "laravel", "helpers"],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "baselrabia",
+            "email": "baselrabia@gmail.com"
+        }
+    ],
+    "require": {
+        "php": "^7.1.3|^8.0",
+        "illuminate/support": "~5.8.0|^6.0|^7.0|^8.0"
+    },
+    "autoload": {
+        "files": [
+            "src/helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
