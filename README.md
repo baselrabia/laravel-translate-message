@@ -29,9 +29,9 @@ In this package, you will be provided by two new Helper function
 
 ```php
 // two underscore and t function 
-__t("Tranlation Word");
+__t("app.Tranlation Word");
 // three underscore Function 
-___("Tranlation Word");
+___("app.Tranlation Word");
 ```
 This Two helpers is a wrapper around the laravel helper `trans()` , `__()` that offer the translation of text from the lang file resource `resource/lang/en/app.php` </br>
 ### What Happen Then !!
