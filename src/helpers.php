@@ -27,7 +27,7 @@ function __t($key = null, $replace = [], $locale = null)
 
     //set the Langs 
 
-    $sourceLang =  'auto' ?? 'en';
+    $sourceLang =  'en'; // auto
 
     $targetLang =  $locale ?? app()->getLocale() ?? 'ar';
     $locale = $targetLang;
