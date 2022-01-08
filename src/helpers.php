@@ -111,7 +111,6 @@ function __t($key = null, $replace = [], $locale = null)
 
             file_put_contents($path, $NewFileContent);
 
-            // file_put_contents($path, $NewFileContent);
         }
 
         return $translatedText;  
