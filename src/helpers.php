@@ -27,16 +27,16 @@ function __t($key = null, $replace = [], $locale = null)
 
     //set the Langs 
 
-    $sourceLang =  'en'; // auto
+    $sourceLang = 'en'; // auto 
 
     $targetLang =  $locale ?? app()->getLocale() ?? 'ar';
     $locale = $targetLang;
 
 
-
     if ($trans != $key && $locale == "en") {
         return $trans;
     }
+    
 
 
     try {
@@ -118,7 +118,7 @@ function __t($key = null, $replace = [], $locale = null)
 
     } catch (Exception $e) {
         Log::error("Error in translate the word : " . $key  . " ", ['Message' =>  $e->getMessage()]);
-        return $e->getMessage();
+        return $trans;
     }
 }
 
