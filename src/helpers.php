@@ -33,7 +33,18 @@ function __t($key = null, $replace = [], $locale = null)
     $locale = $targetLang;
 
 
-    if ($trans != $key && $locale == "en") {
+    $langPath = app()->langPath();
+    $localeFileCheck = $langPath . '/' . $locale . '/' . $group . '.php';
+    
+    try {
+        $transfilecheck = include($localeFileCheck);
+        $TransCheckExist = array_key_exists($sourceText, $transfilecheck);    
+    } catch (\Throwable $th) {
+        $TransCheckExist = false;
+    }
+
+
+    if ($trans != $key && $TransCheckExist) {
         return $trans;
     }
     
@@ -102,9 +113,13 @@ function __t($key = null, $replace = [], $locale = null)
             $FileContent = file_get_contents($path);
 
             //find "];"
-            $pos = strpos($FileContent, "];");
+            $startpos = strpos($FileContent, "[");
+            $endpos = strpos($FileContent, "];") ;
 
-            $NewFileContent = substr($FileContent, 0, $pos);
+             
+
+            $NewFileContent = "<?php  return [" . " " .PHP_EOL;
+            $NewFileContent .= substr($FileContent, $startpos +1 , $endpos - ($startpos + 1));
             $NewFileContent .= PHP_EOL . " " . $msg . " " . PHP_EOL;
             $NewFileContent .= PHP_EOL . " " . "];";
 
